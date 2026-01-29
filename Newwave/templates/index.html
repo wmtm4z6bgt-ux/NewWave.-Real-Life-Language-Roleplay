@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NewWave – Language Practice</title>
+</head>
+<body>
+    <h1>Language Practice Scenarios</h1>
+
+    <ul>
+        {% for s in scenarios %}
+            <li>
+                <strong>{{ s.title }}</strong><br>
+                {{ s.desc }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add new scenario</h2>
+    <form action="/add" method="post">
+        <input type="text" name="title" placeholder="Scenario title">
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
