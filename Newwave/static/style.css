@@ -1,0 +1,389 @@
+/* --- 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ (Чистота и порядок) --- */
+* {
+    box-sizing: border-box; /* Магия: отступы больше не ломают ширину */
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    /* Более современный и приятный шрифт */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50; /* Цвет текста чуть мягче черного (дорогой вид) */
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* --- 2. ГЛАВНЫЙ ЭКРАН (HERO) --- */
+.hero {
+    /* Настраиваем позицию волны идеально по центру */
+    background: url('wave.jpg') no-repeat center 45%;
+    background-size: cover;
+    
+    height: 90vh; /* Чуть выше, чтобы было больше "моря" */
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+/* Контент заголовка */
+.hero-content {
+    /* Поднимаем текст, чтобы он был в "сердце" волны */
+    margin-top: -80px; 
+    z-index: 2;
+}
+
+/* ЛОГОТИП */
+.main-title {
+    font-size: 85px; /* Оптимальный размер */
+    font-weight: 900;
+    color: #000; /* Строгий черный */
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -2px; /* Буквы плотнее — выглядит стильнее */
+    line-height: 1.1;
+}
+
+/* Слоган */
+.subtitle {
+    font-size: 16px;
+    color: #333;
+    margin-top: 15px;
+    margin-bottom: 35px;
+    font-weight: 600;
+    letter-spacing: 3px; /* Разряженный текст для контраста с заголовком */
+    text-transform: uppercase;
+}
+
+/* КНОПКИ */
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-black {
+    background-color: #000;
+    color: #fff;
+    padding: 14px 40px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #000;
+    border: 2px solid #000;
+    padding: 14px 40px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-black:hover { background-color: #333; border-color: #333; }
+.btn-outline:hover { background-color: #000; color: #fff; }
+
+/* Цитата внизу */
+.quote {
+    position: absolute;
+    bottom: 30px;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(0,0,0,0.6);
+}
+
+/* --- 3. СЕКЦИИ КОНТЕНТА (Строгость и воздух) --- */
+.split-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Больше воздуха сверху и снизу для лаконичности */
+    padding: 120px 10%; 
+    gap: 80px;
+    background: white;
+}
+
+/* Текстовый блок */
+.text-box {
+    flex: 1;
+    max-width: 480px; /* Ограничиваем ширину для удобного чтения */
+}
+
+.text-box h2 {
+    font-size: 32px;
+    color: #006d77;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.text-box p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+/* Картинки */
+.image-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.image-box img {
+    max-width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    /* Мягкая тень для объема */
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+}
+
+/* Скриншот Choose your wave - убираем лишние фильтры */
+.wave-split .image-box img {
+    filter: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* Красивая тень */
+}
+
+/* --- 4. СЦЕНАРИИ (Аккуратные карточки) --- */
+.scenarios-section {
+    background-color: #f7fbfd; /* Очень светлый, едва заметный фон */
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 8px; /* Чуть менее скругленные углы (строже) */
+    width: 300px;
+    text-align: left;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05); /* Очень легкая тень */
+    border-top: 4px solid #006d77;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 { margin-top: 0; color: #222; font-size: 20px; }
+.card p { font-size: 15px; color: #666; }
+.btn-small {
+    margin-top: 20px;
+    padding: 10px 25px;
+    background-color: #006d77;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+/* --- 5. ФУТЕР --- */
+.add-section {
+    padding: 60px;
+    background: #f0f0f0;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+}
+.add-section input {
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+@media (max-width: 900px) {
+    .main-title { font-size: 50px; }
+    .split-section { flex-direction: column; padding: 60px 20px; gap: 40px; }
+    .split-section.reverse { flex-direction: column; }
+    .text-box { text-align: center; margin-bottom: 20px; }
+}
+/* --- 6. ИНФОРМАЦИОННЫЙ БЛОК (3 колонки) --- */
+/* --- 6. ИНФОРМАЦИОННЫЙ БЛОК (Всегда 3 колонки) --- */
+.info-section {
+    background-color: #fcfcfc; /* Почти белый фон */
+    padding: 60px 5%; /* Отступы по бокам */
+}
+
+/* Контейнер для кнопки по центру */
+.register-container {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* Сама кнопка Register Now */
+.register-container .btn-black {
+    padding: 12px 30px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+/* Сетка колонок */
+.info-grid {
+    display: flex;
+    justify-content: space-between; /* Растягиваем по ширине */
+    gap: 30px; /* Расстояние между колонками */
+    text-align: left;
+}
+
+.info-col {
+    flex: 1; /* Все колонки равной ширины */
+    border-top: 1px solid #d0d0d0; /* Та самая серая линия сверху */
+    padding-top: 20px;
+}
+
+.info-col h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #000;
+    margin-top: 0;
+}
+
+.info-col p {
+    font-size: 13px; /* Чуть мельче, как в дизайне */
+    color: #666;
+    line-height: 1.5;
+}
+
+/* --- 7. НИЖНЕЕ МЕНЮ (FOOTER) --- */
+.site-footer {
+    display: flex;
+    gap: 40px;
+    /* Уменьшил отступ слева (было 10%, стало 5%), чтобы текст уехал влево */
+    padding: 60px 5%; 
+    background: white;
+    align-items: center;
+}
+
+.footer-brand {
+    font-weight: 900;
+    font-size: 24px; /* Чуть аккуратнее */
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 20px;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: #666;
+    font-weight: 600;
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.footer-link:hover { color: black; }
+
+/* --- 8. ФИНАЛЬНЫЙ БЛОК (CTA) --- */
+.final-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Убрал фиксированную высоту, чтобы блок подстраивался под контент */
+    padding: 50px 5% 0 5%; 
+    background-color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Кнопка */
+.btn-blue {
+    background-color: #1E90FF;
+    color: white;
+    padding: 20px 50px;
+    font-size: 18px;
+    font-weight: 800;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 10px 25px rgba(30, 144, 255, 0.3);
+    transition: transform 0.2s;
+    letter-spacing: 1px;
+    /* Поднимаем кнопку, чтобы она была по центру домика */
+    margin-bottom: 150px; 
+}
+
+.btn-blue:hover { transform: translateY(-3px); background-color: #1c86ee; }
+
+/* КОНТЕЙНЕР ДЛЯ ДОМА */
+.cta-right {
+    position: relative;
+    width: 850px; /* Чуть меньше гигантского (было 950), чтобы влезло аккуратно */
+    height: auto;
+    display: flex;
+    align-items: flex-end;
+    margin-right: -50px;
+    
+    /* ГЛАВНОЕ: Поднимаем дом ВЫШЕ (убрали отрицательный отступ) */
+    margin-bottom: 0; 
+}
+
+.house-img {
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+    /* Поднимаем сам дом еще чуть выше визуально */
+    transform: translateY(-20px);
+}
+
+/* БАРС */
+.leopard-overlay {
+    position: absolute;
+    
+    /* Поднимаем барса ВЫШЕ (над низом картинки) */
+    bottom: 40px; 
+    
+    /* Сдвигаем левее */
+    left: 40px; 
+    
+    /* УМЕНЬШИЛИ: Было 380px -> Стало 300px */
+    width: 300px; 
+    height: auto;
+    
+    z-index: 2;
+}
+
+/* Адаптив */
+@media (max-width: 1100px) {
+    .final-cta { flex-direction: column-reverse; padding-bottom: 50px; text-align: center; }
+    .btn-blue { margin-bottom: 0; }
+    .cta-right { width: 100%; margin-right: 0; justify-content: center; }
+    .leopard-overlay { left: 50%; transform: translateX(-50%); width: 220px; bottom: 0; }
+}

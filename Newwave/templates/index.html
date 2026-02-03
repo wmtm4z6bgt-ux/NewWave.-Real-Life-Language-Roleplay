@@ -2,24 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NewWave – Language Practice</title>
+    <title>New Wave</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Language Practice Scenarios</h1>
 
-    <ul>
-        {% for s in scenarios %}
-            <li>
-                <strong>{{ s.title }}</strong><br>
-                {{ s.desc }}
-            </li>
-        {% endfor %}
-    </ul>
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="main-title">NEW WAVE</h1>
+            <p class="subtitle">REAL-LIFE LANGUAGE ROLEPLAY</p>
 
-    <h2>Add new scenario</h2>
-    <form action="/add" method="post">
-        <input type="text" name="title" placeholder="Scenario title">
-        <button type="submit">Add</button>
-    </form>
+            <div class="hero-buttons">
+                <button class="btn-black">START NOW</button>
+                <button class="btn-outline">LEARN MORE</button>
+            </div>
+
+            <p class="quote">"A different language is another vision of life and culture"</p>
+        </div>
+    </header>
+
+    <section class="split-section">
+        <div class="text-box">
+            <h2>HOW NEW WAVE WORKS?</h2>
+            <p>New Wave is a roleplay platform designed to reduce the gap between "studying language" and "understand and speak".</p>
+            <p>Our team strongly believe that fluency builds through experience.</p>
+            <p><strong>Forget boring memorization!</strong> Dive into real-world simulations where your mission is to complete all the trials!</p>
+        </div>
+        <div class="image-box">
+            <img src="{{ url_for('static', filename='leopard_q.png') }}" alt="Leopard">
+        </div>
+    </section>
+
+    <section class="split-section wave-split">
+        <div class="image-box">
+            <img src="{{ url_for('static', filename='surf.png') }}" alt="Choose your wave" style="border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+        </div>
+        <div class="text-box">
+            <h2>WHY OUR METHODS ARE EFFECTIVE?</h2>
+            <p>People learn languages better when they need to find a "key" to unlock other scenarios.</p>
+            <p>Instead of memorizing a list of words, our users are going through <strong>digital missions</strong>.</p>
+            <p>Immersive Scenarios open the "Flow State".</p>
+        </div>
+    </section>
+
+<section class="info-section">
+        <div class="register-container">
+            <button class="btn-black">REGISTER NOW</button>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-col">
+                <h3>Motivating</h3>
+                <p>Games stimulate motivation to learn more, and students become very absorbed in competitive aspects of them. Moreover, learners try harder than in traditional courses.</p>
+            </div>
+            <div class="info-col">
+                <h3>Reducing stress</h3>
+                <p>Students have to face unfamiliar grammatical structures, words, passages that lead to a highest level of stress. Since people understand that in roleplays they may make mistakes...</p>
+            </div>
+            <div class="info-col">
+                <h3>Adaptive&Relevant</h3>
+                <p>Games provide language practice in various skills - writing, listening and reading. They create a meaningful context for the use of languages such as simple talks, relevant phrases, memes.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-brand">New Wave</div>
+        <a href="#" class="footer-link">Features</a>
+        <a href="#" class="footer-link">Learn more</a>
+        <a href="#" class="footer-link">Support</a>
+    </footer>
+
+    <section class="final-cta">
+        <div class="cta-left">
+            <button class="btn-blue">FIRST TRY FOR FREE</button>
+        </div>
+
+        <div class="cta-right">
+            <img src="{{ url_for('static', filename='house.png') }}" class="house-img" alt="House">
+            <img src="{{ url_for('static', filename='leopard_main.png') }}" class="leopard-overlay" alt="Leopard">
+        </div>
+    </section>
+
+
 </body>
 </html>
