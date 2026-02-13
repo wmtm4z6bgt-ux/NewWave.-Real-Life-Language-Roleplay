@@ -1,0 +1,113 @@
+zz<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Wave - Cafe Mission</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Быстрые стили для игрового интерфейса */
+        body { display: flex; margin: 0; height: 100vh; overflow: hidden; font-family: sans-serif; }
+        
+        .game-main { flex: 3; display: flex; flex-direction: column; background: #e0e0e0; position: relative; }
+        
+        /* Фон кафе */
+        #scene { flex: 2; background-size: cover; background-position: center; position: relative; }
+        
+        /* Персонаж */
+        #character { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 80%; transition: 0.5s; }
+
+        /* Окно диалога */
+        #ui-layer { flex: 1; background: white; padding: 20px; border-top: 5px solid #000; }
+        
+        .clickable-word { cursor: pointer; display: inline-block; margin-right: 5px; padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
+        .clickable-word:hover { background: #ffff00; transform: translateY(-2px); }
+
+        /* Словарь (Diary) */
+        .diary-sidebar { flex: 1; background: #fffcf0; border-left: 3px solid #000; padding: 20px; overflow-y: auto; }
+        
+        .btn-check { margin-top: 10px; padding: 10px 20px; background: #000; color: #fff; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="game-main">
+       <div id="scene" style="background-image: url('{{ url_for('static', filename='cafe_bg.PNG') }}');">
+            <img id="character" src="{{ url_for('static', filename='visitor_1.png') }}" alt="Character">
+        </div>
+
+        <div id="ui-layer">
+            <h3 id="char-name">Customer</h3>
+            <div id="dialogue-text">
+                </div>
+            
+            <div id="answer-zone" style="margin-top: 20px;">
+                <input type="text" id="user-input" placeholder="Type your answer here..." style="width: 70%; padding: 10px;">
+                <button class="btn-check" onclick="checkAnswer()">SEND</button>
+                <p id="feedback"></p>
+            </div>
+        </div>
+    </div>
+
+    <aside class="diary-sidebar">
+        <h2>📔 DIARY</h2>
+        <p><small>Click unknown words to save them!</small></p>
+        <ul id="diary-list"></ul>
+    </aside>
+
+    <audio id="bg-music" loop>
+        <source src="{{ url_for('static', filename='cafe_jazz.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ЛОГИКА ИГРЫ
+        const diaryList = document.getElementById('diary-list');
+        const dialogueBox = document.getElementById('dialogue-text');
+        
+        // 1. Запуск музыки при первом клике (политика браузеров)
+        window.onclick = () => { document.getElementById('bg-music').play(); };
+
+        // 2. Функция добавления в словарь
+        function addToDictionary(word) {
+            const cleanWord = word.replace(/[.,!?;]/g, ""); // Убираем знаки препинания
+            
+            // Проверка, есть ли уже слово в списке
+            const existing = Array.from(diaryList.children).some(li => li.innerText === cleanWord);
+            if (!existing) {
+                const li = document.createElement('li');
+                li.innerText = cleanWord;
+                li.style.cssText = "margin-bottom: 8px; font-weight: bold; color: #d35400;";
+                diaryList.appendChild(li);
+            }
+        }
+
+        // 3. Отрисовка текста (делаем слова кликабельными)
+        function showText(text) {
+            dialogueBox.innerHTML = '';
+            const words = text.split(' ');
+            words.forEach(word => {
+                const span = document.createElement('span');
+                span.innerText = word;
+                span.className = 'clickable-word';
+                span.onclick = () => addToDictionary(word);
+                dialogueBox.appendChild(span);
+            });
+        }
+
+        // Тестовый запуск
+        showText("Hello! I would like to order a large peppermint tea, please.");
+
+        function checkAnswer() {
+            const input = document.getElementById('user-input').value.toLowerCase();
+            const feedback = document.getElementById('feedback');
+            
+            if(input.includes("tea") || input.includes("ok")) {
+                feedback.innerText = "✅ Correct! The customer is happy.";
+                feedback.style.color = "green";
+            } else {
+                feedback.innerText = "❌ Incorrect. Try to understand what they want.";
+                feedback.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

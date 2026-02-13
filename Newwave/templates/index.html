@@ -13,9 +13,11 @@
             <p class="subtitle">REAL-LIFE LANGUAGE ROLEPLAY</p>
 
             <div class="hero-buttons">
-                <button class="btn-black">START NOW</button>
-                <button class="btn-outline">LEARN MORE</button>
-            </div>
+                <a href="{{ url_for('game') }}">
+        <button class="btn-black">START NOW</button>
+    </a>
+    <button class="btn-outline">LEARN MORE</button>
+</div>
 
             <p class="quote">"A different language is another vision of life and culture"</p>
         </div>
@@ -75,7 +77,7 @@
 
     <section class="final-cta">
         <div class="cta-left">
-            <button class="btn-blue">FIRST TRY FOR FREE</button>
+        <button class="btn-black" onclick="goToGame()">FIRST TRY FOR FREE</button>
         </div>
 
         <div class="cta-right">
