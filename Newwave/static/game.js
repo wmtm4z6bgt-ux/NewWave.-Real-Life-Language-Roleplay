@@ -1,64 +1,72 @@
 const levels = [
     {
         characterName: "Oliver",
-        image: "visitor_1.png",
+        image: "visitor_1.PNG", // Проверь расширение (.PNG или .png)
         dialogue: "Hi! Can I have a double espresso and a croissant, please?",
         correctAnswers: ["espresso", "croissant", "ok", "coming"],
-        bg: "cafe_day.png"
+        bg: "cafe_bg.PNG" 
     },
     {
         characterName: "Emma",
-        image: "visitor_2.png",
+        image: "visitor_2.png", 
         dialogue: "Excuse me, do you have any dairy-free milk options?",
         correctAnswers: ["oat milk", "soy milk", "yes", "we have"],
-        bg: "cafe_busy.png"
+        bg: "cafe_day.png"
     },
     {
         characterName: "Mr. Brown",
-        image: "visitor_3.png",
+        image: "leopard_q.png", 
         dialogue: "I ordered a cold brew ten minutes ago. Where is it?",
         correctAnswers: ["sorry", "apologize", "minute", "check"],
-        bg: "cafe_evening.png"
+        bg: "wave_bg.jpg"
     }
 ];
 
-let currentLevelIndex = 0; // Начинаем с первого уровня
+let currentLevelIndex = 0;
+
 function loadLevel(index) {
     const level = levels[index];
 
-    // 1. Меняем имя и картинку персонажа
+    // 1. Имя и картинка (Исправлено: правильные обратные кавычки)
     document.getElementById('char-name').innerText = level.characterName;
-    document.getElementById('character').src = /static/$;level.image};
+    document.getElementById('character').src = `/static/${level.image}`;
     
-    // 2. Меняем фон (если нужно)
-    document.getElementById('scene').style.backgroundImage = url('/static/${level.bg}');
+    // 2. Фон (Исправлено: правильный синтаксис url)
+    document.body.style.backgroundImage = `url('/static/${level.bg}')`;
 
-    // 3. Очищаем ввод и фидбек
+    // 3. Очистка
     document.getElementById('user-input').value = '';
-    document.getElementById('feedback').innerText = '';
+    const feedback = document.getElementById('feedback');
+    if(feedback) feedback.innerText = '';
 
-    // 4. Отрисовываем кликабельный текст (используем твою функцию showText)
-    showText(level.dialogue);
+    // 4. Текст диалога
+    if (typeof showText === "function") {
+        showText(level.dialogue);
+    } else {
+        document.getElementById('dialogue-text').innerText = level.dialogue;
+    }
+} // <--- Обязательно закрываем функцию!
+
 function checkAnswer() {
-    const input = document.getElementById('user-input').value.toLowerCase();
+    const inputField = document.getElementById('user-input');
+    if (!inputField) return;
+
+    const input = inputField.value.toLowerCase();
     const currentLevel = levels[currentLevelIndex];
     const feedback = document.getElementById('feedback');
 
-    // Проверяем, есть ли ключевое слово в ответе
     const isCorrect = currentLevel.correctAnswers.some(keyword => input.includes(keyword));
 
     if (isCorrect) {
         feedback.innerText = "✅ Excellent! Moving to the next customer...";
         feedback.style.color = "green";
 
-        // Задержка 2 секунды перед следующим уровнем
         setTimeout(() => {
-            currentLevelIndex++; // Увеличиваем индекс
-            
+            currentLevelIndex++;
             if (currentLevelIndex < levels.length) {
                 loadLevel(currentLevelIndex);
             } else {
-                showWinScreen(); // Конец игры
+                showWinScreen();
             }
         }, 2000);
         
@@ -67,13 +75,17 @@ function checkAnswer() {
         feedback.style.color = "red";
     }
 }
+
 function showWinScreen() {
     const main = document.querySelector('.game-main');
     main.innerHTML = `
-        <div style="text-align: center; padding-top: 100px;">
+        <div style="text-align: center; padding-top: 100px; background: rgba(255,255,255,0.8); height: 100vh;">
             <h1>🎉 MISSION ACCOMPLISHED!</h1>
             <p>You served all customers and improved your vocabulary.</p>
-            <button onclick="location.reload()" class="btn-check">PLAY AGAIN</button>
+            <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">PLAY AGAIN</button>
         </div>
     `;
 }
+
+// Запускаем первый уровень при загрузке страницы
+window.onload = () => loadLevel(0);
