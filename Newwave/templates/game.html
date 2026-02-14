@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Wave - Cafe Mission</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { display: flex; margin: 0; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        .game-main { flex: 3; display: flex; flex-direction: column; background: #f0f0f0; position: relative; }
+        #scene { flex: 2; background-size: cover; background-position: center; position: relative; border-bottom: 4px solid #000; }
+        #character { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 90%; transition: 0.5s; }
+
+        #ui-layer { flex: 1; background: white; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .speech-bubble { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px solid #333; margin-bottom: 15px; min-height: 60px; }
+        .clickable-word { cursor: pointer; display: inline-block; margin-right: 5px; font-size: 1.2rem; transition: 0.2s; border-bottom: 1px dashed transparent; }
+        .clickable-word:hover { color: #d35400; border-bottom: 1px dashed #d35400; }
+
+        .options-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { padding: 12px; background: #000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        .option-btn:hover { background: #444; transform: translateY(-2px); }
+
+        .diary-sidebar { flex: 1; background: #fffcf0; border-left: 3px solid #000; padding: 20px; overflow-y: auto; }
+        .word-item { cursor: pointer; padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #e67e22; }
+        .word-item.translated { color: #27ae60; font-style: italic; }
+
+        #result-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); 
+                          display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+        .btn-next { padding: 15px 30px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="game-main">
+        <div id="scene" style="background-image: url('{{ url_for('static', filename='cafe_bg.PNG') }}');">
+            <img id="character" src="{{ url_for('static', filename='visitor_1.PNG') }}" alt="Character">
+            
+            <div id="result-overlay">
+                <h2 id="feedback-text"></h2>
+                {% if current_level < 3 %}
+                    <a href="{{ url_for('game', level_id=current_level + 1) }}" class="btn-next">GO TO NEXT LEVEL</a>
+                {% else %}
+                    <a href="/" class="btn-next">BACK TO MENU (VICTORY!)</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="ui-layer">
+            <div>
+                <h3 id="char-name" style="margin: 0 0 10px 0; color: #555;">{{ level.character_name if level.character_name else "Customer" }}</h3>
+                <div class="speech-bubble" id="dialogue-text">
+                    </div>
+            </div>
+            
+            <div class="options-container">
+                {% for option in level.options %}
+                    <button class="option-btn" onclick="handleAnswer({{ option.is_correct|tojson }})">
+                        {{ option.text }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <aside class="diary-sidebar">
+        <h2>📔 DIARY</h2>
+        <p><small>Click words in the bubble to save them. Click them here to translate!</small></p>
+        <div id="diary-list">
+            </div>
+    </aside>
+
+    <audio id="bg-music" loop>
+        <source src="{{ url_for('static', filename='cafe_jazz.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <script>
+       
+const diaryList = document.getElementById('diary-list');
+        const dialogueBox = document.getElementById('dialogue-text');
+        
+        const translations = {
+            "peppermint": "перечная мята",
+            "tea": "чай",
+            "soy": "соевый",
+            "latte": "латте",
+            "caramel": "карамель",
+            "foam": "пена",
+            "cold": "холодный",
+            "waiting": "ожидание",
+            "minutes": "минуты",
+            "unacceptable": "неприемлемо"
+        };
+
+        // 1. Музыка
+        window.onclick = () => { 
+            const music = document.getElementById('bg-music');
+            if (music.paused) music.play(); 
+        };
+
+        // 2. Перевод слов в дневнике
+        function toggleTranslation(element, original) {
+            const cleanKey = original.toLowerCase().replace(/[.,!?;]/g, "");
+            const translation = translations[cleanKey] || "translation unknown";
+            
+            if (element.innerText === original) {
+                element.innerText = translation;
+                element.classList.add('translated');
+            } else {
+                element.innerText = original;
+                element.classList.remove('translated');
+            }
+        }
+
+        // 3. Добавление слова в DIARY
+        function addToDictionary(word) {
+            const cleanWord = word.replace(/[.,!?;]/g, "");
+        
+            const existing = Array.from(diaryList.children).some(div => div.getAttribute('data-word') === cleanWord);
+            
+            if (!existing) {
+                const div = document.createElement('div');
+                div.className = 'word-item';
+                div.setAttribute('data-word', cleanWord);
+                div.innerText = cleanWord;
+                div.onclick = () => toggleTranslation(div, cleanWord);
+                diaryList.appendChild(div);
+            }
+        }
+
+        // 4. Отрисовка текста по словам
+        function renderDialogue(text) {
+            dialogueBox.innerHTML = '';
+            text.split(' ').forEach(word => {
+                const span = document.createElement('span');
+                span.innerText = word + ' ';
+                span.className = 'clickable-word';
+                span.onclick = () => addToDictionary(word);
+                dialogueBox.appendChild(span);
+            });
+        }
+
+        // 5. Обработка ответа
+        function handleAnswer(isCorrect) {
+            const overlay = document.getElementById('result-overlay');
+            const feedback = document.getElementById('feedback-text');
+            
+            overlay.style.display = 'flex';
+            if (isCorrect) {
+                feedback.innerText = "✅ EXCELLENT!";
+                feedback.style.color = "#27ae60";
+            } else {
+                feedback.innerText = "❌ OOPS! TRY AGAIN";
+                feedback.style.color = "#e74c3c";
+                // Если ошибка, прячем оверлей через 1.5 сек, чтобы игрок попробовал еще раз
+                setTimeout(() => { overlay.style.display = 'none'; }, 1500);
+            }
+        }
+
+        // Запуск отрисовки текста из данных Flask
+        renderDialogue("{{ level.character_text }}");
+    </script>
+</body>
+</html>
