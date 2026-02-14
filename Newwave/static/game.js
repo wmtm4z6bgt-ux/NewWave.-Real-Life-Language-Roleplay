@@ -87,5 +87,34 @@ function showWinScreen() {
     `;
 }
 
-// Запускаем первый уровень при загрузке страницы
-window.onload = () => loadLevel(0);
+// Проверяем, есть ли на странице элементы игры, прежде чем запускать уровень
+window.onload = () => {
+    const charNameElement = document.getElementById('char-name');
+    if (charNameElement) {
+        loadLevel(0);
+    }
+};
+
+function openModal() {
+    const modal = document.getElementById("regModal");
+    if (modal) {
+        modal.style.display = "block";
+    } else {
+        console.error("Окно regModal не найдено!");
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById("regModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Закрытие кликом вне окна
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById("regModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});

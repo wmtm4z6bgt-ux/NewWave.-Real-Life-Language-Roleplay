@@ -75,6 +75,90 @@
     </audio>
 
     <script>
-        const diaryList = document.getElementById('diary-list');
+       
+const diaryList = document.getElementById('diary-list');
         const dialogueBox = document.getElementById('dialogue-text');
         
+        const translations = {
+            "peppermint": "перечная мята",
+            "tea": "чай",
+            "soy": "соевый",
+            "latte": "латте",
+            "caramel": "карамель",
+            "foam": "пена",
+            "cold": "холодный",
+            "waiting": "ожидание",
+            "minutes": "минуты",
+            "unacceptable": "неприемлемо"
+        };
+
+        // 1. Музыка
+        window.onclick = () => { 
+            const music = document.getElementById('bg-music');
+            if (music.paused) music.play(); 
+        };
+
+        // 2. Перевод слов в дневнике
+        function toggleTranslation(element, original) {
+            const cleanKey = original.toLowerCase().replace(/[.,!?;]/g, "");
+            const translation = translations[cleanKey] || "translation unknown";
+            
+            if (element.innerText === original) {
+                element.innerText = translation;
+                element.classList.add('translated');
+            } else {
+                element.innerText = original;
+                element.classList.remove('translated');
+            }
+        }
+
+        // 3. Добавление слова в DIARY
+        function addToDictionary(word) {
+            const cleanWord = word.replace(/[.,!?;]/g, "");
+        
+            const existing = Array.from(diaryList.children).some(div => div.getAttribute('data-word') === cleanWord);
+            
+            if (!existing) {
+                const div = document.createElement('div');
+                div.className = 'word-item';
+                div.setAttribute('data-word', cleanWord);
+                div.innerText = cleanWord;
+                div.onclick = () => toggleTranslation(div, cleanWord);
+                diaryList.appendChild(div);
+            }
+        }
+
+        // 4. Отрисовка текста по словам
+        function renderDialogue(text) {
+            dialogueBox.innerHTML = '';
+            text.split(' ').forEach(word => {
+                const span = document.createElement('span');
+                span.innerText = word + ' ';
+                span.className = 'clickable-word';
+                span.onclick = () => addToDictionary(word);
+                dialogueBox.appendChild(span);
+            });
+        }
+
+        // 5. Обработка ответа
+        function handleAnswer(isCorrect) {
+            const overlay = document.getElementById('result-overlay');
+            const feedback = document.getElementById('feedback-text');
+            
+            overlay.style.display = 'flex';
+            if (isCorrect) {
+                feedback.innerText = "✅ EXCELLENT!";
+                feedback.style.color = "#27ae60";
+            } else {
+                feedback.innerText = "❌ OOPS! TRY AGAIN";
+                feedback.style.color = "#e74c3c";
+                // Если ошибка, прячем оверлей через 1.5 сек, чтобы игрок попробовал еще раз
+                setTimeout(() => { overlay.style.display = 'none'; }, 1500);
+            }
+        }
+
+        // Запуск отрисовки текста из данных Flask
+        renderDialogue("{{ level.character_text }}");
+    </script>
+</body>
+</html>

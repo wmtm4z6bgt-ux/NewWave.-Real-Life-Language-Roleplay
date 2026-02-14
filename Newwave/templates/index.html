@@ -13,17 +13,18 @@
             <p class="subtitle">REAL-LIFE LANGUAGE ROLEPLAY</p>
 
           <div class="hero-buttons">
-    <a href="{{ url_for('game', level_id=1) }}" style="text-decoration: none;">
-        <button class="btn-black">START NOW</button>
+   <div class="hero-buttons">
+    <button class="btn-black" onclick="openModal()">START NOW</button>
+    <a href="#about" style="text-decoration: none;">
+        <button class="btn-outline">LEARN MORE</button>
     </a>
-    <button class="btn-outline">LEARN MORE</button>
 </div>
 
             <p class="quote">"A different language is another vision of life and culture"</p>
         </div>
     </header>
 
-    <section class="split-section">
+    <section class="split-section"id="about">
         <div class="text-box">
             <h2>HOW NEW WAVE WORKS?</h2>
             <p>New Wave is a roleplay platform designed to reduce the gap between "studying language" and "understand and speak".</p>
@@ -48,10 +49,45 @@
     </section>
 
 <section class="info-section">
-        <div class="register-container">
-            <button class="btn-black">REGISTER NOW</button>
+    <div class="register-container">
+        <button type="button" class="btn-black" onclick="openModal()">REGISTER NOW</button>
+    </div>
+</section>
+
+<header class="hero">
+    <div class="hero-content">
+        <h1 class="main-title">NEW WAVE</h1>
+        <p class="subtitle">REAL-LIFE LANGUAGE ROLEPLAY</p>
+        <div class="hero-buttons">
+            <button class="btn-black" onclick="openModal()">START NOW</button>
+            <a href="#about" style="text-decoration: none;">
+                <button class="btn-outline">LEARN MORE</button>
+            </a>
         </div>
+        <p class="quote">"A different language is another vision of life and culture"</p>
+    </div>
+</header>
+
+<div id="regModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 style="margin-bottom: 10px;">Join New Wave</h2>
+        <p style="margin-bottom: 20px;">Enter your details to start the journey:</p>
         
+        <form action="{{ url_for('register') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="text" name="username" placeholder="Your Name" required 
+                   style="padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+            
+            <input type="email" name="email" placeholder="Your Email" required 
+                   style="padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"> 
+            
+            <button type="submit" class="btn-black" style="padding: 12px; border-radius: 8px; font-weight: bold;">
+                START GAME
+            </button>
+        </form>
+    </div>
+</div>
+       
         <div class="info-grid">
             <div class="info-col">
                 <h3>Motivating</h3>
@@ -77,7 +113,9 @@
 
     <section class="final-cta">
         <div class="cta-left">
-        <button class="btn-black" onclick="goToGame()">FIRST TRY FOR FREE</button>
+<div class="cta-left">
+    <button class="btn-black" onclick="openModal()">FIRST TRY FOR FREE</button>
+</div>
         </div>
 
         <div class="cta-right">
@@ -85,7 +123,7 @@
             <img src="{{ url_for('static', filename='leopard_main.png') }}" class="leopard-overlay" alt="Leopard">
         </div>
     </section>
-
-
+</div>
+<script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
 </html>
