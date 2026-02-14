@@ -1,6 +1,6 @@
 const levels = [
     {
-        characterName: "Oliver",
+        characterName: "Emma",
         image: "visitor_1.PNG", // Проверь расширение (.PNG или .png)
         dialogue: "Hi! Can I have a double espresso and a croissant, please?",
         correctAnswers: ["espresso", "croissant", "ok", "coming"],
@@ -14,7 +14,7 @@ const levels = [
         bg: "cafe_day.png"
     },
     {
-        characterName: "Mr. Brown",
+        characterName: "Emma",
         image: "leopard_q.png", 
         dialogue: "I ordered a cold brew ten minutes ago. Where is it?",
         correctAnswers: ["sorry", "apologize", "minute", "check"],
